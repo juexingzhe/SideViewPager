@@ -24,22 +24,22 @@ import java.util.ArrayList;
  * 2.build
  */
 
-public class SideViewPager extends RelativeLayout {
+public class SideViewPager<T> extends RelativeLayout {
 
     private static final int SCREEN_PAGE_LIMIT = 3;
-    private static final int PAGE_MARGIN = 0;
     private static final int SCROLLER_DURATION_TIME = 800;     //设置切换速度
     private static final int BANNER_MARGIN_LESS = 5;
-    private static final int BANNER_MARGIN_MORE = 80;
+    private static final int BANNER_MARGIN_MORE = 0;
 
     //attr
     private int mPageMargin;
     private int mRightMargin;
 
     private ViewPager mViewPager;
-    private boolean mCountStatus;  //false--Less, true--More
+    private boolean mCountStatus;  //false--1, true--2 or More
     private SideBannerScroller mSideBannerScroller;
     private int mCurrentPos;
+    private boolean mSideMode;
 
     private BannerAdapter mBannerAdapter;
     private SideViewPagerAdapter mSideViewPagerAdapter;
@@ -72,7 +72,7 @@ public class SideViewPager extends RelativeLayout {
 
     private void readAttrs(Context context, AttributeSet attrs) {
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.SideViewPager);
-        mPageMargin = typedArray.getDimensionPixelSize(R.styleable.SideViewPager_page_margin, PAGE_MARGIN);
+        mPageMargin = typedArray.getDimensionPixelSize(R.styleable.SideViewPager_page_margin, getContext().getResources().getDimensionPixelOffset(R.dimen.side_vp_page_margin));
         mRightMargin = typedArray.getDimensionPixelSize(R.styleable.SideViewPager_right_margin, BANNER_MARGIN_MORE);
         typedArray.recycle();
     }
@@ -81,11 +81,13 @@ public class SideViewPager extends RelativeLayout {
         View view = LayoutInflater.from(getContext()).inflate(R.layout.side_banner, this, true);
         mViewPager = (ViewPager) view.findViewById(R.id.side_banner_viewpager);
         mViewPager.setOffscreenPageLimit(SCREEN_PAGE_LIMIT);
+        setPageMargin(mPageMargin);
 
         setBannerScroll();
     }
 
-    public void setSideMode(boolean mSideMode) {
+    public void setSideMode(boolean sideMode) {
+        mSideMode = sideMode;
         if (!mSideMode) {
             mViewPager.setClipChildren(true);
         } else {
@@ -98,13 +100,16 @@ public class SideViewPager extends RelativeLayout {
 
     public void setPageMargin(int pageMargin) {
         this.mPageMargin = pageMargin;
+        mViewPager.setPageMargin(mPageMargin);
     }
 
     public void setRightMargin(int rightMargin) {
         this.mRightMargin = rightMargin;
+        setSideMode(true);
     }
 
     public void setSideViewPagerAdapter(SideViewPagerAdapter sideViewPagerAdapter) {
+        if (sideViewPagerAdapter == null) return;
         this.mSideViewPagerAdapter = sideViewPagerAdapter;
         setPages();
     }
@@ -121,13 +126,14 @@ public class SideViewPager extends RelativeLayout {
             mCountStatus = true;
         }
 
+        initViewPager();
         if (mSideViewPagerAdapter.getCount() == 1 || mSideViewPagerAdapter.getCount() == 2) {
             processDatasSizeLess();
         } else {
             processDatasSizeMore();
         }
 
-        initViewPager();
+
     }
 
     /**
@@ -383,5 +389,66 @@ public class SideViewPager extends RelativeLayout {
          */
         Object getItemData(int position);
 
+    }
+
+    @Override
+    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+        super.onSizeChanged(w, h, oldw, oldh);
+
+        if (mSideMode && mRightMargin == 0){
+            int paddingLeft = getPaddingLeft();
+            int paddingRight = getPaddingRight();
+            ViewGroup.MarginLayoutParams layoutParams = (ViewGroup.MarginLayoutParams) getLayoutParams();
+            float realWidth = getWidth() - layoutParams.leftMargin - layoutParams.rightMargin -  paddingLeft -  paddingRight;
+
+            realWidth -= 2 * getResources().getDimensionPixelOffset(R.dimen.side_vp_item_margin) - mPageMargin;
+
+            setRightMargin((int) (realWidth / 5));
+        }
+    }
+
+    public static Builder builder(Context context){
+        return new Builder(context);
+    }
+
+    public static class Builder{
+        private int pageMargin;
+        private int rightMargin;
+        private SideViewPagerAdapter sideViewPagerAdapter;
+        private SideViewPager sideViewPager;
+
+        public Builder(Context context){
+            sideViewPager = new SideViewPager(context);
+            pageMargin = -1;
+            rightMargin = -1;
+        }
+
+        public Builder setPageMargin(int pageMargin) {
+            this.pageMargin = pageMargin;
+            return this;
+        }
+
+        public Builder setRightMargin(int rightMargin) {
+            this.rightMargin = rightMargin;
+            return this;
+        }
+
+        public Builder setSideViewPagerAdapter(SideViewPagerAdapter sideViewPagerAdapter) {
+            this.sideViewPagerAdapter = sideViewPagerAdapter;
+            return this;
+        }
+
+        public SideViewPager build(){
+            if (pageMargin != -1){
+                sideViewPager.setPageMargin(pageMargin);
+            }else {
+                sideViewPager.setPageMargin(sideViewPager.getResources().getDimensionPixelOffset(R.dimen.side_vp_page_margin));
+            }
+            if (rightMargin != -1){
+                sideViewPager.setRightMargin(rightMargin);
+            }
+            sideViewPager.setSideViewPagerAdapter(sideViewPagerAdapter);
+            return sideViewPager;
+        }
     }
 }

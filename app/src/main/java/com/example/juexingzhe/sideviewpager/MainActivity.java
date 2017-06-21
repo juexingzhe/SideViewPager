@@ -1,9 +1,14 @@
 package com.example.juexingzhe.sideviewpager;
 
+import android.content.Context;
+import android.graphics.Point;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.view.WindowManager;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import java.util.LinkedList;
@@ -20,6 +25,7 @@ public class MainActivity extends AppCompatActivity {
     private SideViewPager sideViewPager0;
     private SideViewPager sideViewPager1;
     private SideViewPager sideViewPager2;
+    private LinearLayout container;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,20 +33,23 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         sideViewPager0 = (SideViewPager) findViewById(R.id.side_vp_0);
         sideViewPager1 = (SideViewPager) findViewById(R.id.side_vp_1);
-        sideViewPager2 = (SideViewPager) findViewById(R.id.side_vp_2);
-        //sideViewPager2.setRightMargin(160);
-        sideViewPager2.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-            @Override
-            public void onGlobalLayout() {
-                sideViewPager2.setRightMargin(getDefaultMargin(sideViewPager2));
-            }
-        });
+        container = (LinearLayout)findViewById(R.id.container);
+//        sideViewPager2.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+//            @Override
+//            public void onGlobalLayout() {
+//                sideViewPager2.setRightMargin(getDefaultMargin(sideViewPager2));
+//            }
+//        });
 
         initData();
         sideViewPager0.setSideViewPagerAdapter(new MySideViewPagerAdapter(datas0));
         sideViewPager1.setSideViewPagerAdapter(new MySideViewPagerAdapter(datas1));
-        sideViewPager2.setSideViewPagerAdapter(new MySideViewPagerAdapter(datas2));
 
+
+        sideViewPager2 = SideViewPager.builder(this).setSideViewPagerAdapter(new MySideViewPagerAdapter(datas2))
+                .build();
+
+        container.addView(sideViewPager2);
     }
 
     private void initData() {
@@ -97,19 +106,19 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private int getDefaultMargin(View view) {
-//        Point point = new Point();
-//        WindowManager wm = (WindowManager) getSystemService(Context.WINDOW_SERVICE);
-//        wm.getDefaultDisplay().getSize(point);
-//        int width = point.x;
-//        ViewGroup.MarginLayoutParams layoutParams = (ViewGroup.MarginLayoutParams) view.getLayoutParams();
-//        float realWidth = width - layoutParams.leftMargin - layoutParams.rightMargin;
-//
-//        int paddingLeft = view.getPaddingLeft();
-//        int paddingRight = view.getPaddingRight();
-//
-//        realWidth = realWidth - 2 * paddingLeft - 2 * paddingRight - 2 * view.getWidth();
+        Point point = new Point();
+        WindowManager wm = (WindowManager) getSystemService(Context.WINDOW_SERVICE);
+        wm.getDefaultDisplay().getSize(point);
+        int width = point.x;
 
-        return (int) (view.getWidth()/ 2.5f);
+        int paddingLeft = view.getPaddingLeft();
+        int paddingRight = view.getPaddingRight();
+        ViewGroup.MarginLayoutParams layoutParams = (ViewGroup.MarginLayoutParams) view.getLayoutParams();
+        float realWidth = width - layoutParams.leftMargin - layoutParams.rightMargin -  paddingLeft -  paddingRight;
+
+        realWidth -= 2 * getResources().getDimensionPixelOffset(R.dimen.side_vp_item_margin) - getResources().getDimensionPixelOffset(R.dimen.side_vp_page_margin);
+
+        return (int) (realWidth / 2.5f);
     }
 
 }
