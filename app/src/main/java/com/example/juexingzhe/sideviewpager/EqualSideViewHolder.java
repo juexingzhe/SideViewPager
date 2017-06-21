@@ -10,10 +10,10 @@ import android.widget.TextView;
 import java.util.List;
 
 /**
- * Created by juexingzhe on 2017/6/20.
+ * Created by juexingzhe on 2017/6/21.
  */
 
-public class RatioSideViewHolder implements SideViewHolder<SideBean> {
+public class EqualSideViewHolder implements SideViewHolder<SideBean> {
 
     private ImageView imageLeft;
     private ImageView imgRight;
@@ -24,7 +24,7 @@ public class RatioSideViewHolder implements SideViewHolder<SideBean> {
 
     @Override
     public View getView(Context context) {
-        View view = LayoutInflater.from(context).inflate(R.layout.viewpager_item_ratio, null);
+        View view = LayoutInflater.from(context).inflate(R.layout.viewpager_item_equal, null);
         imageLeft = (ImageView) view.findViewById(R.id.vp_equal_image_0);
         imgRight = (ImageView) view.findViewById(R.id.vp_equal_image_1);
         tvLeft = (TextView) view.findViewById(R.id.vp_equal_title_0);
@@ -43,6 +43,7 @@ public class RatioSideViewHolder implements SideViewHolder<SideBean> {
         imageLeft.setImageResource(datas.get(0).getImageRes());
         tvLeft.setText(datas.get(0).getMainTitle());
         btnLeft.setText(datas.get(0).getBtnTitle());
+
 
         if (datas.size() == 1) {
             imgRight.setVisibility(View.GONE);

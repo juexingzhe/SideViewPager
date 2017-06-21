@@ -6,6 +6,8 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.List;
+
 /**
  * Created by juexingzhe on 2017/6/14.
  */
@@ -25,8 +27,26 @@ public class ImageSideViewHolder implements SideViewHolder<SideBean>{
 
     @Override
     public void onBind(Context context, int position, SideBean data) {
-        mImageView.setImageResource(data.getImageRes0());
-        mMainTitle.setText(data.getMainTitle0());
-        mSubTitle.setText(data.getSubTitle0());
+        mImageView.setImageResource(data.getImageRes());
+        mMainTitle.setText(data.getMainTitle());
+        mSubTitle.setText(data.getSubTitle());
+    }
+
+    @Override
+    public void onBind(Context context, int position, List<SideBean> datas) {
+        SideBean sideBean = datas.get(0);
+        mImageView.setImageResource(sideBean.getImageRes());
+        mMainTitle.setText(sideBean.getMainTitle());
+        mSubTitle.setText(sideBean.getSubTitle());
+    }
+
+    @Override
+    public View getLeftClickView() {
+        return null;
+    }
+
+    @Override
+    public View getRightClickView() {
+        return null;
     }
 }
