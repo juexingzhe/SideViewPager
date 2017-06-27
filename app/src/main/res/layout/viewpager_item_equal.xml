@@ -1,54 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:orientation="horizontal">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal">
 
     <LinearLayout
+        android:id="@+id/vp_equal_first_container"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:orientation="vertical">
+        android:background="@color/rtc_wheelview_shadow"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="@dimen/layout_padding">
 
         <ImageView
             android:id="@+id/vp_equal_image_0"
             android:layout_width="match_parent"
             android:layout_height="120dp"
-            android:scaleType="fitXY"/>
+            android:scaleType="fitXY" />
 
         <TextView
             android:id="@+id/vp_equal_title_0"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content" />
 
         <Button
             android:id="@+id/vp_equal_btn_0"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/vp_equal_second_container"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/side_vp_item_margin"
         android:layout_weight="1"
-        android:orientation="vertical">
+        android:background="@color/rtc_wheelview_shadow"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="@dimen/layout_padding">
 
         <ImageView
             android:id="@+id/vp_equal_image_1"
             android:layout_width="match_parent"
             android:layout_height="120dp"
-            android:scaleType="fitXY"/>
+            android:scaleType="fitXY" />
 
         <TextView
             android:id="@+id/vp_equal_title_1"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content" />
 
         <Button
             android:id="@+id/vp_equal_btn_1"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content" />
     </LinearLayout>
 
 </LinearLayout>

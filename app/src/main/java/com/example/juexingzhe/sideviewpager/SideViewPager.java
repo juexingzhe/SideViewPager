@@ -20,8 +20,7 @@ import java.util.ArrayList;
 /**
  * Created by juexingzhe on 2017/6/20.
  * TODO:
- * 1.ViewPager Item宽度比可以设置Ratio
- * 2.build
+ * 1.数据没有时清除View
  */
 
 public class SideViewPager<T> extends RelativeLayout {
@@ -395,11 +394,11 @@ public class SideViewPager<T> extends RelativeLayout {
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
 
-        if (mSideMode && mRightMargin == 0){
+        if (mSideMode && mRightMargin == 0) {
             int paddingLeft = getPaddingLeft();
             int paddingRight = getPaddingRight();
             ViewGroup.MarginLayoutParams layoutParams = (ViewGroup.MarginLayoutParams) getLayoutParams();
-            float realWidth = getWidth() - layoutParams.leftMargin - layoutParams.rightMargin -  paddingLeft -  paddingRight;
+            float realWidth = getWidth() - layoutParams.leftMargin - layoutParams.rightMargin - paddingLeft - paddingRight;
 
             realWidth -= 2 * getResources().getDimensionPixelOffset(R.dimen.side_vp_item_margin) - mPageMargin;
 
@@ -407,17 +406,17 @@ public class SideViewPager<T> extends RelativeLayout {
         }
     }
 
-    public static Builder builder(Context context){
+    public static Builder builder(Context context) {
         return new Builder(context);
     }
 
-    public static class Builder{
+    public static class Builder {
         private int pageMargin;
         private int rightMargin;
         private SideViewPagerAdapter sideViewPagerAdapter;
         private SideViewPager sideViewPager;
 
-        public Builder(Context context){
+        public Builder(Context context) {
             sideViewPager = new SideViewPager(context);
             pageMargin = -1;
             rightMargin = -1;
@@ -438,13 +437,13 @@ public class SideViewPager<T> extends RelativeLayout {
             return this;
         }
 
-        public SideViewPager build(){
-            if (pageMargin != -1){
+        public SideViewPager build() {
+            if (pageMargin != -1) {
                 sideViewPager.setPageMargin(pageMargin);
-            }else {
+            } else {
                 sideViewPager.setPageMargin(sideViewPager.getResources().getDimensionPixelOffset(R.dimen.side_vp_page_margin));
             }
-            if (rightMargin != -1){
+            if (rightMargin != -1) {
                 sideViewPager.setRightMargin(rightMargin);
             }
             sideViewPager.setSideViewPagerAdapter(sideViewPagerAdapter);

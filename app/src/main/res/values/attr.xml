@@ -4,7 +4,4 @@
         <attr name="right_margin" format="dimension"/>
         <attr name="page_margin" format="dimension"/>
     </declare-styleable>
-    <declare-styleable name="SideLinearLayout">
-        <attr name="side_ll_ratio" format="float"/>
-    </declare-styleable>
 </resources>

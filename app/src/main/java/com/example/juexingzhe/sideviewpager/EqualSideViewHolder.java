@@ -5,9 +5,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.List;
+
+import static android.view.View.GONE;
 
 /**
  * Created by juexingzhe on 2017/6/21.
@@ -18,6 +21,7 @@ public class EqualSideViewHolder implements SideViewHolder<SideBean> {
     private ImageView imageLeft;
     private ImageView imgRight;
     private TextView tvLeft;
+    private LinearLayout secondContainer;
     private TextView tvRight;
     private Button btnLeft;
     private Button btnRight;
@@ -28,6 +32,7 @@ public class EqualSideViewHolder implements SideViewHolder<SideBean> {
         imageLeft = (ImageView) view.findViewById(R.id.vp_equal_image_0);
         imgRight = (ImageView) view.findViewById(R.id.vp_equal_image_1);
         tvLeft = (TextView) view.findViewById(R.id.vp_equal_title_0);
+        secondContainer = (LinearLayout)view.findViewById(R.id.vp_equal_second_container);
         tvRight = (TextView) view.findViewById(R.id.vp_equal_title_1);
         btnLeft = (Button) view.findViewById(R.id.vp_equal_btn_0);
         btnRight = (Button) view.findViewById(R.id.vp_equal_btn_1);
@@ -46,9 +51,10 @@ public class EqualSideViewHolder implements SideViewHolder<SideBean> {
 
 
         if (datas.size() == 1) {
-            imgRight.setVisibility(View.GONE);
-            tvRight.setVisibility(View.GONE);
-            btnRight.setVisibility(View.GONE);
+            secondContainer.setVisibility(View.INVISIBLE);
+            imgRight.setVisibility(GONE);
+            tvRight.setVisibility(GONE);
+            btnRight.setVisibility(GONE);
             return;
         }
         imgRight.setImageResource(datas.get(1).getImageRes());
